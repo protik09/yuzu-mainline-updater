@@ -1,0 +1,87 @@
+# This workflow will install Python dependencies, run tests and lint with a variety of Python versions
+# For more information see: https://help.github.com/actions/language-and-framework-guides/using-python-with-github-actions
+
+name: "Yuzu Updater Release"
+
+on:
+  push:
+    branches:
+      - main
+
+  pull_request:
+    branches:
+      - main
+
+    types: [
+        assigned,
+        unassigned,
+        labeled,
+        unlabeled,
+        opened,
+        edited,
+        closed,
+        reopened,
+        synchronize,
+        ready_for_review,
+        locked,
+        unlocked,
+        review_requested,
+        review_request_removed
+      ]
+
+jobs:
+  pre-release:
+    name: "Release"
+    runs-on: windows-latest
+    strategy:
+      matrix:
+        python-version: [3.7, 3.8, 3.9]
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: Install dependencies
+      run: |
+        python3 -m pip install --upgrade pip
+        python3 -m pip install flake8 pytest
+        # if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+        
+        # Check if requirements.txt exists 
+        $file = '.\requirements.txt'
+        if (Test-Path -Path $file -PathType Leaf) {
+          try {
+              python3 -m pip install -r requirements.txt
+          }
+          catch {
+              throw $_.Exception.Message
+          }
+        }
+        # If the file already exists, show the message and do nothing.
+        else {
+            Write-Host "[$file] does not exist."
+        }
+          
+    - name: Lint with flake8
+      run: |
+        # stop the build if there are Python syntax errors or undefined names
+        python3 -m flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+        # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
+        python3 -m flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+    
+    - name: Convert to EXE with pyinstaller
+      run: |
+        pyinstaller --onefile -w yuzu-updater.py
+    
+    - name: "Engage the release bot"
+      uses: "protik09/yuzu-mainline-updater/@latest"
+      with:
+        repo_token: "${{ secrets.GITHUB_TOKEN }}"
+        automatic_release_tag: "latest"
+        prerelease: true
+        title: "Development Build"
+        files: |
+          dist\yuzu-updater.exe
