@@ -1,4 +1,4 @@
-[![yuzu-mainline-updater](https://github.com/protik09/yuzu-mainline-updater/actions/workflows/python-package.yml/badge.svg?branch=development)](https://github.com/protik09/yuzu-mainline-updater/actions/workflows/python-package.yml)
+[![Development](https://github.com/protik09/yuzu-mainline-updater/actions/workflows/yuzu-updater-ci.yml/badge.svg?branch=development)](https://github.com/protik09/yuzu-mainline-updater/actions/workflows/yuzu-updater-ci.yml) [![Main Release](https://github.com/protik09/yuzu-mainline-updater/actions/workflows/yuzu-updater-release.yml/badge.svg)](https://github.com/protik09/yuzu-mainline-updater/actions/workflows/yuzu-updater-release.yml)
 
 # Yuzu Mainline Updater
 
