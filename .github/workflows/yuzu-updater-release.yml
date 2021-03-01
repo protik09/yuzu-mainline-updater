@@ -60,7 +60,7 @@ jobs:
         pyinstaller --onefile -w yuzu-updater.py
     
     - name: "Engage the release bot"
-      uses: "protik09/yuzu-mainline-updater@latest"
+      uses: "protik09/yuzu-mainline-updater@master"
       with:
         repo_token: "${{ secrets.GITHUB_TOKEN }}"
         automatic_release_tag: "latest"
