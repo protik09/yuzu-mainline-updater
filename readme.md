@@ -5,3 +5,5 @@
 This is a simple script that updates the Yuzu mainline release in-situ, i.e., you need to copy the executable (or the python file) to the yuzu executable directory and run it from there. 
 
 I'll update this readme as I add features to it.
+
+I am not affiliated with the yuzu project. Just an admirer. ^_^
