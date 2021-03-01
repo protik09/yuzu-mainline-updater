@@ -62,7 +62,9 @@ jobs:
     - name: "Engage the release bot"
       uses: "protik09/yuzu-mainline-updater@main"
       with:
+        branch: "main"
         repo_token: "${{ secrets.GITHUB_TOKEN }}"
+        github_token: "${{ secrets.GITHUB_TOKEN }}"
         automatic_release_tag: "latest"
         prerelease: true
         title: "Development Build"
