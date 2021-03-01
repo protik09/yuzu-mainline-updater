@@ -76,4 +76,4 @@ jobs:
     
     - name: Convert to EXE with pyinstaller
       run: |
-        pyinstaller --onefile --windows yuzu-updater.py
+        pyinstaller --onefile -w yuzu-updater.py
