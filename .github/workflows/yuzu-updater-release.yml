@@ -6,28 +6,11 @@ name: "Main Release"
 on:
   push:
     branches:
-      - main
+      - "main"
 
   pull_request:
     branches:
-      - main
-
-    types: [
-        assigned,
-        unassigned,
-        labeled,
-        unlabeled,
-        opened,
-        edited,
-        closed,
-        reopened,
-        synchronize,
-        ready_for_review,
-        locked,
-        unlocked,
-        review_requested,
-        review_request_removed
-      ]
+      - "main"
 
 jobs:
   pre-release:
@@ -77,7 +60,7 @@ jobs:
         pyinstaller --onefile -w yuzu-updater.py
     
     - name: "Engage the release bot"
-      uses: "protik09/yuzu-mainline-updater/@latest"
+      uses: "protik09/yuzu-mainline-updater@latest"
       with:
         repo_token: "${{ secrets.GITHUB_TOKEN }}"
         automatic_release_tag: "latest"
