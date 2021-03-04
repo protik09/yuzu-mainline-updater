@@ -1,0 +1,1 @@
+pyinstaller --onefile -w --icon="art\yuzu-mainline-updater.ico" "yuzu-updater.py"
