@@ -31,7 +31,7 @@ jobs:
       run: |
         python3 -m pip install --upgrade pip
         python3 -m pip install flake8 pytest
-        # if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+        # if [ -f requirements.txt ]; then pip install -r requirements.txt; fi # Use in bash
         
         # Check if requirements.txt exists 
         $file = '.\requirements.txt'
@@ -57,7 +57,8 @@ jobs:
     
     - name: Convert to EXE with pyinstaller
       run: |
-        pyinstaller --onefile -w yuzu-updater.py
+        # pyinstaller -y --log-level DEBUG --console --icon ".\art\yuzu-mainline-updater.ico" --onefile yuzu-updater.py
+        pyinstaller -y --console --icon ".\art\yuzu-mainline-updater.ico" --onefile yuzu-updater.py
     
     - name: "Engage the release bot"
       uses: "protik09/yuzu-mainline-updater@main"
