@@ -1,4 +1,7 @@
+psutil
 wheel
 pyinstaller
 tqdm
 coloredlogs
+# TKinter
+tk
