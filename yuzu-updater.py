@@ -187,8 +187,12 @@ if __name__ == "__main__":
             #     print(e)
             #     EndProgram(3)
         else:
-            # Since process is not running just go on to download the stuff
-            pass
+            # Since process is not running ask user if you want to update
+            user_input = input("\nDo you want to update to the latest Yuzu version : ")
+            if (user_input == "y") or (user_input == "Y"):
+                pass
+            else:
+                EndProgram(5)
 
         # Find the appropriate executable URL
         y = re.findall(YUZU_URL_REGEX, releases_page_raw)
