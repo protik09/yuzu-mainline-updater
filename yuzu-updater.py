@@ -6,17 +6,19 @@ Update Yuzu mainline in-situ.
 @author Protik Banerji <protik09@gmail.com>
 
 """
+import logging
 import os
 import re
 import shutil
-import signal
 import subprocess
 import sys
-import psutil
 import urllib.request
 from distutils.dir_util import copy_tree
 from zipfile import ZipFile
 
+import argparse
+import coloredlogs
+import psutil
 from tqdm import tqdm
 
 # Global variables that don't need to be
@@ -87,33 +89,33 @@ def ProcessRunning(processName):
             EndProgram()
     return False
 
-def KillProcessTree(processName):
-    """
-    Kill the process containing the string processName
-    """
-    #Iterate over the all the running process
-    ospid = os.getpid()
-    for proc in psutil.process_iter():
-        try:
-            # Check if process name contains the given name string.
-            if processName.lower() == proc.name().lower():
-                pid = proc.pid()
-                print("Proc")
-                print("ProcID - {pid}, OSPID - {ospid}")
-                # Try not to suicide process
-                if proc.pid() == int(os.getpid()):
-                    raise RuntimeError(f"Refuse to suicide current process - {proc.name()}")
-                else:
-                    # Kill the process
-                    parent = psutil.Process(proc.pid())
-                    children = parent.children(recursive=True)
-                    children.append(parent)
-                    for p in children:
-                        p.send_signal(signal.SIGTERM)
-        except (psutil.NoSuchProcess, psutil.AccessDenied, psutil.ZombieProcess) as e:
-            print(e)
-            EndProgram()
-    return False
+# def KillProcessTree(processName):
+#     """
+#     Kill the process containing the string processName
+#     """
+#     #Iterate over the all the running process
+#     ospid = os.getpid()
+#     for proc in psutil.process_iter():
+#         try:
+#             # Check if process name contains the given name string.
+#             if processName.lower() == proc.name().lower():
+#                 pid = proc.pid()
+#                 print("Proc")
+#                 print("ProcID - {pid}, OSPID - {ospid}")
+#                 # Try not to suicide process
+#                 if proc.pid() == int(os.getpid()):
+#                     raise RuntimeError(f"Refuse to suicide current process - {proc.name()}")
+#                 else:
+#                     # Kill the process
+#                     parent = psutil.Process(proc.pid())
+#                     children = parent.children(recursive=True)
+#                     children.append(parent)
+#                     for p in children:
+#                         p.send_signal(signal.SIGTERM)
+#         except (psutil.NoSuchProcess, psutil.AccessDenied, psutil.ZombieProcess) as e:
+#             print(e)
+#             EndProgram()
+#     return False
 
 def EndProgram(exit_code = -1):
     if (exit_code != 0):
@@ -126,6 +128,8 @@ def EndProgram(exit_code = -1):
 
 # Main part of the program
 if __name__ == "__main__":
+    # Create a logger object.
+    logger = logging.getLogger(sys._getframe().f_code.co_name)
 
     # Check the current version of yuzu installed
     print("Checking current installed version of Yuzu")
